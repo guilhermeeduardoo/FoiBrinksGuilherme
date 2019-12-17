@@ -12,6 +12,7 @@ import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +22,9 @@ import br.com.guilherme.foibrinks.model.Cliente;
 
 /**
  * @author guilh
- *
+ * 
  */
+@WebServlet("/adiciona")
 public class AdicionaClienteServlet extends HttpServlet {
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
@@ -32,10 +34,10 @@ public class AdicionaClienteServlet extends HttpServlet {
 		String estadocivil = request.getParameter("estadocivil");
 		String genero = request.getParameter("genero");
 		String rua = request.getParameter("rua");
-		String bairro = request .getParameter("bairro");
-		String CEP = request .getParameter("CEP");
-		String estado = request .getParameter("estado");
-		String CPF = request .getParameter("CPF");
+		String bairro = request.getParameter("bairro");
+		String CEP = request.getParameter("CEP");
+		String estado = request.getParameter("estado");
+		String CPF = request.getParameter("CPF");
 		String dataEmTexto = request.getParameter("datanascimento");
 		Calendar dataCadastro = Calendar.getInstance();
 		Calendar dataNascimento = null;
@@ -65,7 +67,7 @@ public class AdicionaClienteServlet extends HttpServlet {
 		dao.adiciona(cliente);
 		// imprime o nome do contato que foi adicionado
 		RequestDispatcher rd = request
-				.getRequestDispatcher("/lista-contatos.jsp");
+				.getRequestDispatcher("/listarClientes.jsp");
 		rd.forward(request, response);
 
 	}

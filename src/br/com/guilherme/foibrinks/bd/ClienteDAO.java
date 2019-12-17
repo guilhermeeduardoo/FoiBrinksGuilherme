@@ -19,7 +19,7 @@ public class ClienteDAO {
 	}
 	public void adiciona(Cliente cliente) {
 
-		String sql = "insert into contatos "
+		String sql = "insert into clientes "
 				+ "(nomeCompleto,estadocivil,genero,rua,bairro,CEP,estado,CPF,DatadeNascimento,DatadeCadastrodeSistema)"
 				+ " values (?,?,?,?,?,?,?,?,?,?)";
 		try {
@@ -55,7 +55,7 @@ public class ClienteDAO {
 			while (rs.next()) {
 				// criando o objeto Contato
 				Cliente cliente = new Cliente();
-				cliente.setId(rs.getLong("id"));
+				cliente.setId(rs.getLong("idcliente"));
 				cliente.setNomeCompleto(rs.getString("nomeCompleto"));
 				cliente.setEstadoCivil(rs.getString("estadocivil"));
 				cliente.setGenero(rs.getString("genero"));
@@ -63,12 +63,12 @@ public class ClienteDAO {
 				cliente.setBairro(rs.getString("bairro"));
 				cliente.setCEP(rs.getString("CEP"));
 				cliente.setEstado(rs.getString("estado"));
-				cliente.setCPF(rs.getNString("CPF"));
+				cliente.setCPF(rs.getString("CPF"));
 				Calendar datanascimento = Calendar.getInstance();
 				datanascimento.setTime(rs.getDate("DatadeNascimento"));
 				cliente.setDatadeNascimento(datanascimento);
 				Calendar datacadastrosistema = Calendar.getInstance();
-				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodoSistema"));
+				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodeSistema"));
 				cliente.setDatadeCadastrodoSistema(datacadastrosistema);
 				// adicionando o objeto à lista
 				clientes.add(cliente);
@@ -83,7 +83,7 @@ public class ClienteDAO {
 	public void remove(Cliente cliente) {
 		try {
 			PreparedStatement stmt = connection
-					.prepareStatement("delete from clientes where id=?");
+					.prepareStatement("delete from clientes where idcliente=?");
 			stmt.setLong(1, cliente.getId());
 			stmt.execute();
 			stmt.close();
@@ -96,12 +96,12 @@ public class ClienteDAO {
 
 		try {
 			PreparedStatement stmt = this.connection
-					.prepareStatement("SELECT * FROM clientes WHERE id=?");
+					.prepareStatement("SELECT * FROM clientes WHERE idcliente=?");
 			stmt.setLong(1, Long.parseLong(id));
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				cliente.setId(rs.getLong("id"));
+				cliente.setId(rs.getLong("idcliente"));
 				cliente.setNomeCompleto(rs.getString("nomeCompleto"));
 				cliente.setEstadoCivil(rs.getString("estadocivil"));
 				cliente.setGenero(rs.getString("genero"));
@@ -109,12 +109,12 @@ public class ClienteDAO {
 				cliente.setBairro(rs.getString("bairro"));
 				cliente.setCEP(rs.getString("CEP"));
 				cliente.setEstado(rs.getString("estado"));
-				cliente.setCPF(rs.getNString("CPF"));
+				cliente.setCPF(rs.getString("CPF"));
 				Calendar datanascimento = Calendar.getInstance();
 				datanascimento.setTime(rs.getDate("DatadeNascimento"));
 				cliente.setDatadeNascimento(datanascimento);
 				Calendar datacadastrosistema = Calendar.getInstance();
-				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodoSistema"));
+				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodeSistema"));
 				cliente.setDatadeCadastrodoSistema(datacadastrosistema);
 			}
 			rs.close();
@@ -129,8 +129,8 @@ public class ClienteDAO {
 	public void altera(Cliente cliente) {
 
 		String sql = "update clientes set nomeCompleto=?,estadocivil=?," +
-				"genero=?,rua,bairro=?,CEP=?,estado=?,CPF=?,DatadeNascimento=?," +
-				"DatadeCadastrodeSistema=? where id=?";
+				"genero=?,rua=?,bairro=?,CEP=?,estado=?,CPF=?,DatadeNascimento=?" +
+				"where idcliente=?";
 		try {
 			// prepared statement para inserção
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -145,9 +145,7 @@ public class ClienteDAO {
 			stmt.setString(8, cliente.getCPF());
 			stmt.setDate(9, new Date(cliente.getDatadeNascimento()
 					.getTimeInMillis()));
-			stmt.setDate(10,new Date(cliente.getDatadeCadastrodoSistema()
-					.getTimeInMillis()));
-			stmt.setLong(11, cliente.getId()); // executa
+			stmt.setLong(10, cliente.getId()); // executa
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {

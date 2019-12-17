@@ -12,6 +12,7 @@ import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import br.com.guilherme.foibrinks.model.Cliente;
  * @author guilh
  *
  */
+@WebServlet("/altera")
 public class AlteraClienteServlet extends HttpServlet {
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
@@ -67,7 +69,7 @@ public class AlteraClienteServlet extends HttpServlet {
 		dao.altera(cliente);
 		// imprime o nome do contato que foi adicionado
 		RequestDispatcher rd = request
-				.getRequestDispatcher("/lista-contatos.jsp");
+				.getRequestDispatcher("/listarClientes.jsp");
 		rd.forward(request, response);
 
 	}
