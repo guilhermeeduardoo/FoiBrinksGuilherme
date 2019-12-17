@@ -103,7 +103,7 @@
 						value="<%=data.format(cliente.getDatadeNascimento().getTimeInMillis())%>">
 				</div>
 			</div>
-			<button type="submit" class="btn btn-info">Adicionar</button>
+			<button type="submit" class="btn btn-info">Alterar Dados</button>
 
 		</form>
 	</div>
