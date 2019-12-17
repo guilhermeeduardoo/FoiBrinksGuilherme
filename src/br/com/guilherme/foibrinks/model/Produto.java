@@ -3,21 +3,21 @@ package br.com.guilherme.foibrinks.model;
 import java.util.Calendar;
 
 public class Produto {
-	private long id;
+	private long idproduto;
 	private String NomeProduto;
 	private String marca;
 	private String FaixaEtariaIndicada;
-	private String altura;
-	private String largura;
-	private String profundidade;
-	private String peso;
-	private Calendar preco;
-	private Calendar DatadeNascimento;
-	public long getId() {
-		return id;
+	private double altura;
+	private double largura;
+	private double profundidade;
+	private double peso;
+	private double preco;
+	private Calendar DataCadastro;
+	public long getIdproduto() {
+		return idproduto;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setIdproduto(long idproduto) {
+		this.idproduto = idproduto;
 	}
 	public String getNomeProduto() {
 		return NomeProduto;
@@ -37,41 +37,40 @@ public class Produto {
 	public void setFaixaEtariaIndicada(String faixaEtariaIndicada) {
 		FaixaEtariaIndicada = faixaEtariaIndicada;
 	}
-	public String getAltura() {
+	public double getAltura() {
 		return altura;
 	}
-	public void setAltura(String altura) {
+	public void setAltura(double altura) {
 		this.altura = altura;
 	}
-	public String getLargura() {
+	public double getLargura() {
 		return largura;
 	}
-	public void setLargura(String largura) {
+	public void setLargura(double largura) {
 		this.largura = largura;
 	}
-	public String getProfundidade() {
+	public double getProfundidade() {
 		return profundidade;
 	}
-	public void setProfundidade(String profundidade) {
+	public void setProfundidade(double profundidade) {
 		this.profundidade = profundidade;
 	}
-	public String getPeso() {
+	public double getPeso() {
 		return peso;
 	}
-	public void setPeso(String peso) {
+	public void setPeso(double peso) {
 		this.peso = peso;
 	}
-	public Calendar getPreco() {
+	public double getPreco() {
 		return preco;
 	}
-	public void setPreco(Calendar preco) {
+	public void setPreco(double preco) {
 		this.preco = preco;
 	}
-	public Calendar getDatadeNascimento() {
-		return DatadeNascimento;
+	public Calendar getDataCadastro() {
+		return DataCadastro;
 	}
-	public void setDatadeNascimento(Calendar datadeNascimento) {
-		DatadeNascimento = datadeNascimento;
-	}
-	
+	public void setDataCadastro(Calendar dataCadastro) {
+		DataCadastro = dataCadastro;
+	} 	
 }

@@ -91,7 +91,7 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
-	public Cliente getContatoById(String id) {
+	public Cliente getClienteById(String id) {
 		Cliente cliente = new Cliente();
 
 		try {

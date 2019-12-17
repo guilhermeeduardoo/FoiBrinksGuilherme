@@ -5,7 +5,7 @@
 	SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
 	ClienteDAO dao = new ClienteDAO();
 	String id = request.getParameter("id");
-	Cliente cliente = dao.getContatoById(id);
+	Cliente cliente = dao.getClienteById(id);
 %>
 <html>
 <head>
