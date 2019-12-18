@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,10 +20,11 @@ import br.com.guilherme.foibrinks.model.Produto;
  * @author guilh
  *
  */
+@WebServlet("/alteraProduto")
 public class AlteraProdutoServlet extends HttpServlet {
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-		long idproduto = Long.parseLong("idproduto");
+		long idproduto = Long.parseLong(request.getParameter("idproduto"));
 		String NomeProduto = request.getParameter("NomeProduto");
 		String marca = request.getParameter("marca");
 		String FaixaEtariaIndicada = request.getParameter("FaixaEtariaIndicada");
@@ -49,7 +51,7 @@ public class AlteraProdutoServlet extends HttpServlet {
 		dao.altera(produto);
 		
 		RequestDispatcher rd = request
-				.getRequestDispatcher("/listarProdutos.jsp");
+				.getRequestDispatcher("/listarProduto.jsp");
 		rd.forward(request, response);
 	}
 }

@@ -47,7 +47,7 @@ public class ProdutoDAO {
 
 		String sql = "update produtos set nomeProduto=?,marca=?,"
 				+ "FaixaEtariaIndicada=?,altura=?,largura=?,profundidade=?,peso=?,preco=?,DataCadastro=?"
-				+ "where idcliente=?";
+				+ "where idproduto=?";
 		try {
 			// prepared statement para inserção
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -85,7 +85,7 @@ public class ProdutoDAO {
 						.getString("FaixaEtariaIndicada"));
 				produto.setAltura(rs.getDouble("altura"));
 				produto.setLargura(rs.getDouble("largura"));
-				produto.setProfundidade(rs.getDouble("profundido"));
+				produto.setProfundidade(rs.getDouble("profundidade"));
 				produto.setPeso(rs.getDouble("peso"));
 				produto.setPreco(rs.getDouble("preco"));
 				Calendar dataCadastro = Calendar.getInstance();
@@ -95,6 +95,7 @@ public class ProdutoDAO {
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
+			throw new RuntimeException(e);
 		}
 
 		return produtos;
@@ -129,7 +130,7 @@ public class ProdutoDAO {
 						.getString("FaixaEtariaIndicada"));
 				produto.setAltura(rs.getDouble("altura"));
 				produto.setLargura(rs.getDouble("largura"));
-				produto.setProfundidade(rs.getDouble("profundido"));
+				produto.setProfundidade(rs.getDouble("profundidade"));
 				produto.setPeso(rs.getDouble("peso"));
 				produto.setPreco(rs.getDouble("preco"));
 				Calendar dataCadastro = Calendar.getInstance();
@@ -142,7 +143,6 @@ public class ProdutoDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-
 		return produto;
 	}
 }
