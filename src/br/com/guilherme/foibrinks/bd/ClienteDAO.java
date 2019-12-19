@@ -10,13 +10,21 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.guilherme.foibrinks.model.Cliente;
-
+/**
+ * Classe responsavel em fazer as operações do banco de dados
+ * @author guilh
+ *
+ */
 public class ClienteDAO {
 	private Connection connection;
 
 	public ClienteDAO() {
 		this.connection = new ConnectionFactory().getConnection();
 	}
+	/**
+	 * Metudo responsavel por adicionar um cliente ao banco de dados
+	 * @param cliente
+	 */
 	public void adiciona(Cliente cliente) {
 
 		String sql = "insert into clientes "
@@ -46,6 +54,10 @@ public class ClienteDAO {
 		}
 		
 }
+	/**
+	 * Resposavel em listar os clientes do banco de dados
+	 * @return lista de clientes
+	 */
 	public List<Cliente> getLista() {
 		try {
 			List<Cliente> clientes = new ArrayList<Cliente>();
@@ -80,6 +92,10 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	/**
+	 * Responsavel em remover os clientes do banco de dados
+	 * @param cliente
+	 */
 	public void remove(Cliente cliente) {
 		try {
 			PreparedStatement stmt = connection
@@ -91,6 +107,11 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	/**
+	 * Responsavel em buscar um cliente especifico pelo id
+	 * @param id
+	 * @return
+	 */
 	public Cliente getClienteById(String id) {
 		Cliente cliente = new Cliente();
 
@@ -126,6 +147,10 @@ public class ClienteDAO {
 
 		return cliente;
 	}
+	/**
+	 * Responsavel em alterar dados do cliente já adicionado 
+	 * @param cliente
+	 */
 	public void altera(Cliente cliente) {
 
 		String sql = "update clientes set nomeCompleto=?,estadocivil=?," +

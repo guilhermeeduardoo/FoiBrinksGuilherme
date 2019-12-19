@@ -11,14 +11,21 @@ import java.util.List;
 
 import br.com.guilherme.foibrinks.model.Cliente;
 import br.com.guilherme.foibrinks.model.Produto;
-
+/**
+ * Classe resposavel em fazer as operações de crud de produto no banco de dados
+ * @author guilh
+ *
+ */
 public class ProdutoDAO {
 	private Connection connection;
 
 	public ProdutoDAO() {
 		connection = new ConnectionFactory().getConnection();
 	}
-
+/**
+ * Responsavel em adicionar o produto no banco de dados
+ * @param produto
+ */
 	public void adiciona(Produto produto) {
 		String sql = "INSERT INTO `produtos`(`NomeProduto`, `marca`, "
 				+ "`FaixaEtariaIndicada`, `altura`, `largura`, `profundidade`,"
@@ -42,7 +49,10 @@ public class ProdutoDAO {
 			// TODO: handle exception
 		}
 	}
-
+/**
+ * Responsavel em alterar os dados do produto já adicionado
+ * @param produto
+ */
 	public void altera(Produto produto) {
 
 		String sql = "update produtos set nomeProduto=?,marca=?,"
@@ -69,7 +79,10 @@ public class ProdutoDAO {
 			throw new RuntimeException(e);
 		}
 	}
-
+/**
+ * Retorna uma lista de produtos adicionados ao banco de dados
+ * @return
+ */
 	public List<Produto> getLista() {
 		List<Produto> produtos = new ArrayList<Produto>();
 		try {
@@ -100,7 +113,10 @@ public class ProdutoDAO {
 
 		return produtos;
 	}
-
+/**
+ * Responsavel em remover um produto no banco de dados
+ * @param produto
+ */
 	public void remove(Produto produto) {
 		try {
 			PreparedStatement stmt = connection
@@ -112,7 +128,11 @@ public class ProdutoDAO {
 			throw new RuntimeException(e);
 		}
 	}
-
+/**
+ * Responsavel em buscar um produto especifico pelo id
+ * @param id
+ * @return
+ */
 	public Produto getProdutoById(String id) {
 		Produto produto = new Produto();
 

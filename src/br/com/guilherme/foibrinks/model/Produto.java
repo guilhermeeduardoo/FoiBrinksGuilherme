@@ -1,7 +1,11 @@
 package br.com.guilherme.foibrinks.model;
 
 import java.util.Calendar;
-
+/**
+ * Fornece os atributos do produtos para ser adicionado ao banco de dados
+ * @author guilh
+ *
+ */
 public class Produto {
 	private long idproduto;
 	private String NomeProduto;

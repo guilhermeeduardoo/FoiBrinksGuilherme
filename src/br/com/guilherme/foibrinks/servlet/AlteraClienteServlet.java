@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.guilherme.foibrinks.bd.ClienteDAO;
 import br.com.guilherme.foibrinks.model.Cliente;
 
-/**
+/**Responsavel em coletar as informações digitadas em jsp e converter em dados logicos
  * @author guilh
  *
  */

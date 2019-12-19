@@ -5,7 +5,7 @@ package br.com.guilherme.foibrinks.model;
 
 import java.util.Calendar;
 
-/**
+/**Fornece os atributos do cliente para ser adicionado ao banco de dados
  * @author guilh
  *
  */

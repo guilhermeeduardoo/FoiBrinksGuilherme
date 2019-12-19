@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.guilherme.foibrinks.bd.ProdutoDAO;
 import br.com.guilherme.foibrinks.model.Produto;
 
-/**
+/**Responsavel em coletar as informações digitadas em jsp e converter em dados logicos
  * @author guilh
  *
  */
