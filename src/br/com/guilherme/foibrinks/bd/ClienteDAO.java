@@ -10,10 +10,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.guilherme.foibrinks.model.Cliente;
+
 /**
  * Classe responsavel em fazer as operações do banco de dados
+ * 
  * @author guilh
- *
+ * 
  */
 public class ClienteDAO {
 	private Connection connection;
@@ -21,8 +23,10 @@ public class ClienteDAO {
 	public ClienteDAO() {
 		this.connection = new ConnectionFactory().getConnection();
 	}
+
 	/**
 	 * Metudo responsavel por adicionar um cliente ao banco de dados
+	 * 
 	 * @param cliente
 	 */
 	public void adiciona(Cliente cliente) {
@@ -44,7 +48,7 @@ public class ClienteDAO {
 			stmt.setString(8, cliente.getCPF());
 			stmt.setDate(9, new Date(cliente.getDatadeNascimento()
 					.getTimeInMillis()));
-			stmt.setDate(10,new Date(cliente.getDatadeCadastrodoSistema()
+			stmt.setDate(10, new Date(cliente.getDatadeCadastrodoSistema()
 					.getTimeInMillis()));
 			// executa
 			stmt.execute();
@@ -52,10 +56,12 @@ public class ClienteDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
-}
+
+	}
+
 	/**
 	 * Resposavel em listar os clientes do banco de dados
+	 * 
 	 * @return lista de clientes
 	 */
 	public List<Cliente> getLista() {
@@ -80,7 +86,8 @@ public class ClienteDAO {
 				datanascimento.setTime(rs.getDate("DatadeNascimento"));
 				cliente.setDatadeNascimento(datanascimento);
 				Calendar datacadastrosistema = Calendar.getInstance();
-				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodeSistema"));
+				datacadastrosistema.setTime(rs
+						.getDate("DatadeCadastrodeSistema"));
 				cliente.setDatadeCadastrodoSistema(datacadastrosistema);
 				// adicionando o objeto à lista
 				clientes.add(cliente);
@@ -92,8 +99,10 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
+
 	/**
 	 * Responsavel em remover os clientes do banco de dados
+	 * 
 	 * @param cliente
 	 */
 	public void remove(Cliente cliente) {
@@ -107,8 +116,10 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
+
 	/**
 	 * Responsavel em buscar um cliente especifico pelo id
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -135,7 +146,8 @@ public class ClienteDAO {
 				datanascimento.setTime(rs.getDate("DatadeNascimento"));
 				cliente.setDatadeNascimento(datanascimento);
 				Calendar datacadastrosistema = Calendar.getInstance();
-				datacadastrosistema.setTime(rs.getDate("DatadeCadastrodeSistema"));
+				datacadastrosistema.setTime(rs
+						.getDate("DatadeCadastrodeSistema"));
 				cliente.setDatadeCadastrodoSistema(datacadastrosistema);
 			}
 			rs.close();
@@ -147,15 +159,17 @@ public class ClienteDAO {
 
 		return cliente;
 	}
+
 	/**
-	 * Responsavel em alterar dados do cliente já adicionado 
+	 * Responsavel em alterar dados do cliente já adicionado
+	 * 
 	 * @param cliente
 	 */
 	public void altera(Cliente cliente) {
 
-		String sql = "update clientes set nomeCompleto=?,estadocivil=?," +
-				"genero=?,rua=?,bairro=?,CEP=?,estado=?,CPF=?,DatadeNascimento=?" +
-				"where idcliente=?";
+		String sql = "update clientes set nomeCompleto=?,estadocivil=?,"
+				+ "genero=?,rua=?,bairro=?,CEP=?,estado=?,CPF=?,DatadeNascimento=?"
+				+ "where idcliente=?";
 		try {
 			// prepared statement para inserção
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -176,5 +190,63 @@ public class ClienteDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public  List<Cliente> getPesquisaAniversariante(String mes) {
+		List<Cliente> clientes = new ArrayList<Cliente>();
+
+		try {
+			PreparedStatement stmt = this.connection
+					.prepareStatement("select nomeCompleto, DatadeNascimento from clientes WHERE" +
+							" (EXTRACT(MONTH FROM DatadeNascimento) = ?) order by DatadeNascimento");
+			stmt.setString(1, mes);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setNomeCompleto(rs.getString("nomeCompleto"));
+				Calendar datanascimento = Calendar.getInstance();
+				datanascimento.setTime(rs.getDate("DatadeNascimento"));
+				cliente.setDatadeNascimento(datanascimento);
+				clientes.add(cliente);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return clientes;
+	}
+	public List<Cliente> getNovatos(String mes, String ano){
+		List<Cliente> clientes = new ArrayList<Cliente>();
+
+		try {
+			PreparedStatement stmt = this.connection
+					.prepareStatement("select idcliente, nomeCompleto, DatadeNascimento,DatadeCadastrodeSistema from clientes WHERE" +
+							" (EXTRACT(MONTH FROM DatadeCadastrodeSistema) = ?) and (EXTRACT(YEAR FROM DatadeCadastrodeSistema) = ?)");
+			stmt.setString(1, mes);
+			stmt.setString(2, ano);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setId(rs.getLong("idcliente"));
+				cliente.setNomeCompleto(rs.getString("nomeCompleto"));
+				Calendar datanascimento = Calendar.getInstance();
+				datanascimento.setTime(rs.getDate("DatadeNascimento"));
+				cliente.setDatadeNascimento(datanascimento);
+				Calendar datacadastrosistema = Calendar.getInstance();
+				datacadastrosistema.setTime(rs
+						.getDate("DatadeCadastrodeSistema"));
+				cliente.setDatadeCadastrodoSistema(datacadastrosistema);
+				clientes.add(cliente);
+				
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return clientes;
 	}
 }
