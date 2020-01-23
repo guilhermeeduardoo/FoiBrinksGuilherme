@@ -29,7 +29,7 @@ public class ProdutoDAO {
 	public void adiciona(Produto produto) {
 		String sql = "INSERT INTO `produtos`(`NomeProduto`, `marca`, "
 				+ "`FaixaEtariaIndicada`, `altura`, `largura`, `profundidade`,"
-				+ " `peso`, `preco`, `DataCadastro`) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ " `peso`, `preco`, `DataCadastro`, `precoDesconto`) VALUES (?,?,?,?,?,?,?,?,?)";
 
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -43,6 +43,7 @@ public class ProdutoDAO {
 			stmt.setDouble(8, produto.getPreco());
 			stmt.setDate(9, new Date(produto.getDataCadastro()
 					.getTimeInMillis()));
+			stmt.setDouble(10, produto.getPrecoDesconto());
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -56,7 +57,7 @@ public class ProdutoDAO {
 	public void altera(Produto produto) {
 
 		String sql = "update produtos set nomeProduto=?,marca=?,"
-				+ "FaixaEtariaIndicada=?,altura=?,largura=?,profundidade=?,peso=?,preco=?,DataCadastro=?"
+				+ "FaixaEtariaIndicada=?,altura=?,largura=?,profundidade=?,peso=?,preco=?,DataCadastro=?, precoDesconto=?"
 				+ "where idproduto=?";
 		try {
 			// prepared statement para inserção
@@ -72,7 +73,8 @@ public class ProdutoDAO {
 			stmt.setDouble(8, produto.getPreco());
 			stmt.setDate(9, new Date(produto.getDataCadastro()
 					.getTimeInMillis()));
-			stmt.setLong(10, produto.getIdproduto()); // executa
+			stmt.setDouble(10, produto.getPrecoDesconto());
+			stmt.setLong(11, produto.getIdproduto()); // executa
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -104,6 +106,7 @@ public class ProdutoDAO {
 				Calendar dataCadastro = Calendar.getInstance();
 				dataCadastro.setTime(rs.getDate("DataCadastro"));
 				produto.setDataCadastro(dataCadastro);
+				produto.setPrecoDesconto(rs.getDouble("precoDesconto"));
 				produtos.add(produto);
 			}
 		} catch (SQLException e) {
@@ -164,5 +167,67 @@ public class ProdutoDAO {
 			throw new RuntimeException(e);
 		}
 		return produto;
+	}
+	public List<Produto> getListacomDesconto() {
+		List<Produto> produtos = new ArrayList<Produto>();
+		try {
+			PreparedStatement stmt = this.connection
+					.prepareStatement("SELECT * FROM `produtos` ORDER BY DataCadastro DESC LIMIT 4");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Produto produto = new Produto();
+				produto.setIdproduto(rs.getLong("idproduto"));
+				produto.setNomeProduto(rs.getString("nomeProduto"));
+				produto.setMarca(rs.getString("marca"));
+				produto.setFaixaEtariaIndicada(rs
+						.getString("FaixaEtariaIndicada"));
+				produto.setAltura(rs.getDouble("altura"));
+				produto.setLargura(rs.getDouble("largura"));
+				produto.setProfundidade(rs.getDouble("profundidade"));
+				produto.setPeso(rs.getDouble("peso"));
+				produto.setPreco(rs.getDouble("preco"));
+				Calendar dataCadastro = Calendar.getInstance();
+				dataCadastro.setTime(rs.getDate("DataCadastro"));
+				produto.setDataCadastro(dataCadastro);
+				produto.getPrecoDesconto();
+				produtos.add(produto);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}
+
+		return produtos;
+	}
+	public List<Produto> getListaFretePraLua() {
+		List<Produto> produtos = new ArrayList<Produto>();
+		try {
+			PreparedStatement stmt = this.connection
+					.prepareStatement("SELECT * FROM `produtos` ORDER BY peso DESC");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Produto produto = new Produto();
+				produto.setIdproduto(rs.getLong("idproduto"));
+				produto.setNomeProduto(rs.getString("nomeProduto"));
+				produto.setMarca(rs.getString("marca"));
+				produto.setFaixaEtariaIndicada(rs
+						.getString("FaixaEtariaIndicada"));
+				produto.setAltura(rs.getDouble("altura"));
+				produto.setLargura(rs.getDouble("largura"));
+				produto.setProfundidade(rs.getDouble("profundidade"));
+				produto.setPeso(rs.getDouble("peso"));
+				produto.setPreco(rs.getDouble("preco"));
+				Calendar dataCadastro = Calendar.getInstance();
+				dataCadastro.setTime(rs.getDate("DataCadastro"));
+				produto.setDataCadastro(dataCadastro);
+				produto.setPrecoDesconto(rs.getDouble("precoDesconto"));
+				produtos.add(produto);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}
+
+		return produtos;
 	}
 }

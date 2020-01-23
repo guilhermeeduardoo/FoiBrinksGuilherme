@@ -249,4 +249,29 @@ public class ClienteDAO {
 		}
 		return clientes;
 	}
+	public  List<Cliente> getPesquisaDependentesAniversariante(String mes) {
+		List<Cliente> clientes = new ArrayList<Cliente>();
+
+		try {
+			PreparedStatement stmt = this.connection
+					.prepareStatement("select nomeCompleto, dataNascimento from dependente_clientes WHERE" +
+							" (EXTRACT(MONTH FROM dataNascimento) = ?) order by dataNascimento");
+			stmt.setString(1, mes);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setNomeCompleto(rs.getString("nomeCompleto"));
+				Calendar datanascimento = Calendar.getInstance();
+				datanascimento.setTime(rs.getDate("dataNascimento"));
+				cliente.setDatadeNascimento(datanascimento);
+				clientes.add(cliente);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return clientes;
+	}
 }

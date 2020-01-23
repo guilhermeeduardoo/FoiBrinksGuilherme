@@ -24,6 +24,7 @@ br.com.guilherme.foibrinks.bd.*,br.com.guilherme.foibrinks.model.*"%>
 			<button type="submit" class="btn btn-info">Pesquisar</button>
 		</form>
 	</div>
+	<h1>Clientes Aniversariantes</h1>
 	<div>
 		<table class="table table-striped">
 			<thead>
@@ -37,6 +38,7 @@ br.com.guilherme.foibrinks.bd.*,br.com.guilherme.foibrinks.model.*"%>
 			<tbody>
 				<%
 					SimpleDateFormat data= new SimpleDateFormat("dd/MM/yyyy");
+				Calendar hoje = Calendar.getInstance();
 								String mes = request.getParameter("mes");
 								  ClienteDAO dao = new ClienteDAO(); List<Cliente> clientes =dao.getPesquisaAniversariante(mes);
 								for (Cliente cliente : clientes) {
@@ -45,7 +47,36 @@ br.com.guilherme.foibrinks.bd.*,br.com.guilherme.foibrinks.model.*"%>
 
 					<td><%=cliente.getNomeCompleto()%></td>
 					<td><%=data.format(cliente.getDatadeNascimento().getTimeInMillis())%></td>
-					<td>substituir</td>
+					<td><%=data.format(cliente.getDatadeNascimento().getTimeInMillis())%></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+		</table>
+	</div>
+	<h1>Dependentes Aniversariantes</h1>
+	<div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+
+					<th scope="col">Nome</th>
+					<th scope="col">Data de Nascimento</th>
+					<th scope="col">Idade</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%
+					SimpleDateFormat data2= new SimpleDateFormat("dd/MM/yyyy");
+								String mes2 = request.getParameter("mes");
+								  ClienteDAO dao2 = new ClienteDAO(); List<Cliente> clientess =dao2.getPesquisaDependentesAniversariante(mes2);
+								for (Cliente clientee : clientess) {
+				%>
+				<tr>
+
+					<td><%=clientee.getNomeCompleto()%></td>
+					<td><%=data2.format(clientee.getDatadeNascimento().getTimeInMillis())%></td>
 				</tr>
 				<%
 					}
