@@ -191,7 +191,10 @@ public class ClienteDAO {
 			throw new RuntimeException(e);
 		}
 	}
-
+	/**
+	 * O metodo é responsavel em listar os os clientes aniversariantes 
+	 * @return
+	 */
 	public  List<Cliente> getPesquisaAniversariante(String mes) {
 		List<Cliente> clientes = new ArrayList<Cliente>();
 
@@ -217,6 +220,10 @@ public class ClienteDAO {
 		}
 		return clientes;
 	}
+	/**
+	 * O metodo é responsavel em listar os novatos   
+	 * @return
+	 */
 	public List<Cliente> getNovatos(String mes, String ano){
 		List<Cliente> clientes = new ArrayList<Cliente>();
 
@@ -249,6 +256,10 @@ public class ClienteDAO {
 		}
 		return clientes;
 	}
+	/**
+	 * O metodo é responsavel em listar os clientes e dependentes aniversariantes  
+	 * @return
+	 */
 	public  List<Cliente> getPesquisaDependentesAniversariante(String mes) {
 		List<Cliente> clientes = new ArrayList<Cliente>();
 

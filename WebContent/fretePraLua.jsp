@@ -18,6 +18,7 @@ br.com.guilherme.foibrinks.bd.*,br.com.guilherme.foibrinks.model.*"%>
       <th scope="col">ID</th>
       <th scope="col">Nome</th>
       <th scope="col">Peso</th>
+      <th scope="col">Volume</th>
       <th scope="col">Preço</th>
       <th scope="col">Total Frete</th>
       <th scope="col">Preço Com Frete</th>
@@ -33,6 +34,7 @@ for (Produto produto : produtos) { %>
     		<td><%=produto.getIdproduto()%></td>
 			<td><%=produto.getNomeProduto()%></td>
 			<td><%=produto.getPeso()%></td>
+			<td><%=produto.getVolume()%></td>
 			<td><%=produto.getPreco()%></td>
 			<%
 				double valorFreteGrama,ValorFrete, totalComFrete;

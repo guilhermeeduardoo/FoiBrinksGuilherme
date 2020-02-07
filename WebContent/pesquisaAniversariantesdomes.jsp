@@ -47,7 +47,7 @@ br.com.guilherme.foibrinks.bd.*,br.com.guilherme.foibrinks.model.*"%>
 
 					<td><%=cliente.getNomeCompleto()%></td>
 					<td><%=data.format(cliente.getDatadeNascimento().getTimeInMillis())%></td>
-					<td><%=data.format(cliente.getDatadeNascimento().getTimeInMillis())%></td>
+					<td></td>
 				</tr>
 				<%
 					}

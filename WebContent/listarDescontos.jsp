@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page
 	import="java.util.*, 
@@ -30,14 +31,10 @@ for (Produto produto : produtos) { %>
     <tr>
 			<td><%=produto.getNomeProduto()%></td>
 			<td><%=produto.getPreco()%></td>
-			<% 
-			//Calculando o desconto na mão
-			double desconto, valorDesconto, precoComDesconto;
-			valorDesconto = 3.018735;
-			desconto = (valorDesconto * produto.getPreco())/100;
-			String valorDescontoFormatado = String.format("%.2f", produto.getPreco()-desconto ); // formatei o valor para ficar duas casas apos a virgula
+			<%
+				DecimalFormat desconto = new DecimalFormat("0.00");
 			%>
-			<td><%=valorDescontoFormatado%></td>
+			<td><%=desconto.format(produto.getDesconto())%></td>
 			<td><%=data.format(produto.getDataCadastro().getTimeInMillis()) %></td>
 		</tr>
 		<% } %>

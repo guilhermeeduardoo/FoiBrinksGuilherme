@@ -16,24 +16,23 @@ public class Produto {
 	private double profundidade;
 	private double peso;
 	private double preco;
-	private double precoDesconto;
+	private double volume;
+	private double desconto;
 	private Calendar DataCadastro;
-	
-	public double getPrecoDesconto() {
-		return precoDesconto;
-	}
-	
-	public void setPrecoDesconto(double precoDesconto) {
-		this.precoDesconto = precoDesconto;
-	}
-	//METODO PARA CALCULAR DESCONTO
-	public double calculaPrecoDesconto() {
-		double desconto, valorDesconto, precoComDesconto;
-		valorDesconto = 3.018735;
-		desconto = (valorDesconto * 100/ this.preco);
-		precoComDesconto = this.preco - desconto;
+
+	public double getDesconto() {
+		double valorDesconto = 3.018735;
+		double desconto = (valorDesconto * this.preco)/100;
+		double precoComDesconto = this.preco - desconto;
 		return precoComDesconto;
 	}
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
+	}
+	public void setVolume(double volume) {
+		this.volume = volume;
+	}
+	
 	public long getIdproduto() {
 		return idproduto;
 	}
@@ -94,4 +93,7 @@ public class Produto {
 	public void setDataCadastro(Calendar dataCadastro) {
 		DataCadastro = dataCadastro;
 	} 	
+	public double getVolume(){
+		return altura*largura*profundidade;
+	}
 }

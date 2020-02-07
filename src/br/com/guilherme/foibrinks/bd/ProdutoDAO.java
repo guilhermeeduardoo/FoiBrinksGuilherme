@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.guilherme.foibrinks.model.Cliente;
 import br.com.guilherme.foibrinks.model.Produto;
+
 /**
  * Classe resposavel em fazer as operações de crud de produto no banco de dados
+ * 
  * @author guilh
- *
+ * 
  */
 public class ProdutoDAO {
 	private Connection connection;
@@ -22,14 +23,16 @@ public class ProdutoDAO {
 	public ProdutoDAO() {
 		connection = new ConnectionFactory().getConnection();
 	}
-/**
- * Responsavel em adicionar o produto no banco de dados
- * @param produto
- */
+
+	/**
+	 * Responsavel em adicionar o produto no banco de dados
+	 * 
+	 * @param produto
+	 */
 	public void adiciona(Produto produto) {
 		String sql = "INSERT INTO `produtos`(`NomeProduto`, `marca`, "
 				+ "`FaixaEtariaIndicada`, `altura`, `largura`, `profundidade`,"
-				+ " `peso`, `preco`, `DataCadastro`, `precoDesconto`) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ " `peso`, `preco`, `DataCadastro`, `volume`, `precoDesconto`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -43,21 +46,25 @@ public class ProdutoDAO {
 			stmt.setDouble(8, produto.getPreco());
 			stmt.setDate(9, new Date(produto.getDataCadastro()
 					.getTimeInMillis()));
-			stmt.setDouble(10, produto.getPrecoDesconto());
+			stmt.setDouble(10, produto.getVolume());
+			stmt.setDouble(11, produto.getDesconto());
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
+			throw new RuntimeException(e);
 			// TODO: handle exception
 		}
 	}
-/**
- * Responsavel em alterar os dados do produto já adicionado
- * @param produto
- */
+
+	/**
+	 * Responsavel em alterar os dados do produto já adicionado
+	 * 
+	 * @param produto
+	 */
 	public void altera(Produto produto) {
 
 		String sql = "update produtos set nomeProduto=?,marca=?,"
-				+ "FaixaEtariaIndicada=?,altura=?,largura=?,profundidade=?,peso=?,preco=?,DataCadastro=?, precoDesconto=?"
+				+ "FaixaEtariaIndicada=?,altura=?,largura=?,profundidade=?,peso=?,preco=?,DataCadastro=?, volume=?, precoDesconto=?"
 				+ "where idproduto=?";
 		try {
 			// prepared statement para inserção
@@ -73,18 +80,21 @@ public class ProdutoDAO {
 			stmt.setDouble(8, produto.getPreco());
 			stmt.setDate(9, new Date(produto.getDataCadastro()
 					.getTimeInMillis()));
-			stmt.setDouble(10, produto.getPrecoDesconto());
-			stmt.setLong(11, produto.getIdproduto()); // executa
+			stmt.setDouble(10, produto.getVolume());
+			stmt.setDouble(11, produto.getDesconto());
+			stmt.setLong(12, produto.getIdproduto()); // executa
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-/**
- * Retorna uma lista de produtos adicionados ao banco de dados
- * @return
- */
+
+	/**
+	 * Retorna uma lista de produtos adicionados ao banco de dados
+	 * 
+	 * @return
+	 */
 	public List<Produto> getLista() {
 		List<Produto> produtos = new ArrayList<Produto>();
 		try {
@@ -106,7 +116,7 @@ public class ProdutoDAO {
 				Calendar dataCadastro = Calendar.getInstance();
 				dataCadastro.setTime(rs.getDate("DataCadastro"));
 				produto.setDataCadastro(dataCadastro);
-				produto.setPrecoDesconto(rs.getDouble("precoDesconto"));
+				produto.setVolume(rs.getDouble("volume"));
 				produtos.add(produto);
 			}
 		} catch (SQLException e) {
@@ -116,10 +126,12 @@ public class ProdutoDAO {
 
 		return produtos;
 	}
-/**
- * Responsavel em remover um produto no banco de dados
- * @param produto
- */
+
+	/**
+	 * Responsavel em remover um produto no banco de dados
+	 * 
+	 * @param produto
+	 */
 	public void remove(Produto produto) {
 		try {
 			PreparedStatement stmt = connection
@@ -131,11 +143,13 @@ public class ProdutoDAO {
 			throw new RuntimeException(e);
 		}
 	}
-/**
- * Responsavel em buscar um produto especifico pelo id
- * @param id
- * @return
- */
+
+	/**
+	 * Responsavel em buscar um produto especifico pelo id
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Produto getProdutoById(String id) {
 		Produto produto = new Produto();
 
@@ -168,11 +182,17 @@ public class ProdutoDAO {
 		}
 		return produto;
 	}
+	/**
+	 * O metodo é responsavel em listar os produtos com descontos  
+	 * @return
+	 */
 	public List<Produto> getListacomDesconto() {
 		List<Produto> produtos = new ArrayList<Produto>();
 		try {
 			PreparedStatement stmt = this.connection
-					.prepareStatement("SELECT * FROM `produtos` ORDER BY DataCadastro DESC LIMIT 4");
+					.prepareStatement("select * from produtos WHERE EXISTS "
+							+ "(SELECT * from produtos order by produtos.DataCadastro asc) "
+							+ "ORDER by produtos.precoDesconto DESC LIMIT 4");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Produto produto = new Produto();
@@ -188,8 +208,8 @@ public class ProdutoDAO {
 				produto.setPreco(rs.getDouble("preco"));
 				Calendar dataCadastro = Calendar.getInstance();
 				dataCadastro.setTime(rs.getDate("DataCadastro"));
+				produto.setDesconto(rs.getDouble("precoDesconto"));
 				produto.setDataCadastro(dataCadastro);
-				produto.getPrecoDesconto();
 				produtos.add(produto);
 			}
 		} catch (SQLException e) {
@@ -199,11 +219,15 @@ public class ProdutoDAO {
 
 		return produtos;
 	}
+	/**
+	 * O metodo é responsavel em listar os produtos com o frete para lua  
+	 * @return
+	 */
 	public List<Produto> getListaFretePraLua() {
 		List<Produto> produtos = new ArrayList<Produto>();
 		try {
 			PreparedStatement stmt = this.connection
-					.prepareStatement("SELECT * FROM `produtos` ORDER BY peso DESC");
+					.prepareStatement("SELECT * FROM `produtos` ORDER BY volume DESC");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Produto produto = new Produto();
@@ -220,7 +244,7 @@ public class ProdutoDAO {
 				Calendar dataCadastro = Calendar.getInstance();
 				dataCadastro.setTime(rs.getDate("DataCadastro"));
 				produto.setDataCadastro(dataCadastro);
-				produto.setPrecoDesconto(rs.getDouble("precoDesconto"));
+				produto.setVolume(rs.getDouble("volume"));
 				produtos.add(produto);
 			}
 		} catch (SQLException e) {
